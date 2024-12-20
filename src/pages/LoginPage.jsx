@@ -31,7 +31,7 @@ const LoginPage = () => {
     <div className="container">
       <div className="inner-container">
         <div className="auth-form-wrapper">
-          <img src="/public/logo.png" alt="Logo" />
+          <img src="/logo.png" alt="Logo" />
           <div
             style={{
               display: "flex",
