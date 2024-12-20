@@ -10,32 +10,8 @@ const Navbar = () => {
     <nav id="navbar">
       <div className="nav-container">
         <a href="/" className="nav-title">
-          {/* <Users size={24} /> */}
           <span>{getLabelFromPath(location?.pathname)}</span>
         </a>
-
-        {/* <ul className="nav-links">
-          <li>
-            <a href="/dashboard" className="nav-link active">
-              Dashboard
-            </a>
-          </li>
-          <li>
-            <a href="/jobs" className="nav-link">
-              Jobs
-            </a>
-          </li>
-          <li>
-            <a href="/applications" className="nav-link">
-              Applications
-            </a>
-          </li>
-          <li>
-            <a href="/messages" className="nav-link">
-              Messages
-            </a>
-          </li>
-        </ul> */}
 
         <div className="nav-actions">
           <Mail className="nav-icon" size={35} />

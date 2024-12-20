@@ -10,8 +10,8 @@ import { BACKEND_API } from "../../constants";
 const CandidateManagement = () => {
   const [addNew, setAddNew] = useState(false);
   const [candidates, setCandidates] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(""); // Tracks search term
-  const [filter, setFilter] = useState({}); // Tracks department filter
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filter, setFilter] = useState({});
 
   const [newCandidate, setNewCandidate] = useState({
     c_name: "",
@@ -20,10 +20,9 @@ const CandidateManagement = () => {
     c_position: "",
     c_status: "New",
     c_experience: "",
-    c_resume: null, // Initially, the resume is null
+    c_resume: null,
   });
 
-  // Fetch all candidates
   useEffect(() => {
     fetchCandidates();
   }, [filter, searchTerm]);
@@ -34,26 +33,25 @@ const CandidateManagement = () => {
       const data = await candidateServices.listCandidates({
         filter,
         search: searchTerm,
-      }); // Fetch candidates
-      setCandidates(data); // Update candidates state with fetched data
+      });
+      setCandidates(data);
     } catch (error) {
       console.error("Error fetching candidates:", error);
     }
   };
 
-  // Add a new candidate
   const addCandidate = async () => {
     try {
       const formData = new FormData();
-      formData.append("c_name", newCandidate.c_name); // Name
-      formData.append("c_email", newCandidate.c_email); // Email
-      formData.append("c_phone", newCandidate.c_phone); // Phone number
-      formData.append("c_position", newCandidate.c_position); // Position
-      formData.append("c_status", newCandidate.c_status); // Status
-      formData.append("c_experience", newCandidate.c_experience); // Experience
+      formData.append("c_name", newCandidate.c_name);
+      formData.append("c_email", newCandidate.c_email);
+      formData.append("c_phone", newCandidate.c_phone);
+      formData.append("c_position", newCandidate.c_position);
+      formData.append("c_status", newCandidate.c_status);
+      formData.append("c_experience", newCandidate.c_experience);
 
       if (newCandidate.c_resume) {
-        formData.append("resume", newCandidate.c_resume); // Resume file
+        formData.append("resume", newCandidate.c_resume);
       }
 
       const data = await candidateServices.newCandidate(formData, true);
@@ -64,7 +62,6 @@ const CandidateManagement = () => {
     }
   };
 
-  // Update a candidate's status
   const updateCandidateStatus = async (id, newStatus) => {
     try {
       await candidateServices.updateCandidate(id, { c_status: newStatus });
@@ -77,7 +74,6 @@ const CandidateManagement = () => {
     }
   };
 
-  // Delete a candidate
   const deleteCandidate = async (id) => {
     try {
       await candidateServices.deleteCandidate(id);

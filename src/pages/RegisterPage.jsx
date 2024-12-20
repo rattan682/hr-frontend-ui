@@ -8,7 +8,7 @@ import { BACKEND_API } from "../../constants";
 const RegisterPage = () => {
   const [eyes, setEyes] = useState(false);
   const navigate = useNavigate();
-  // Initialize the form handling with react-hook-form
+
   const {
     register,
     handleSubmit,
@@ -16,7 +16,6 @@ const RegisterPage = () => {
     watch,
   } = useForm();
 
-  // Form submit handler
   const onSubmit = async (data) => {
     const response = await axios.post(`${BACKEND_API}/user/register`, data);
 
@@ -25,7 +24,6 @@ const RegisterPage = () => {
       return navigate("/login");
     }
     toast.error(response.data.message);
-    // Handle form submission logic here
   };
 
   return (

@@ -5,15 +5,15 @@ import CustomMenu from "../components/CustomMenu";
 import CustomButton from "../components/CustomButton";
 import ModalHeading from "../components/ModalHeading";
 import { Edit2, MoreVertical } from "lucide-react";
-import * as employeeService from "../services/employees/index"; // Importing employee services
+import * as employeeService from "../services/employees/index";
 import { BACKEND_API } from "../../constants";
 
 const Employees = () => {
-  const [editEmployee, setEditEmployee] = useState(null); // Tracks employee to edit
-  const [menu, setMenu] = useState(null); // Tracks open menu
-  const [searchTerm, setSearchTerm] = useState(""); // Tracks search term
-  const [filter, setFilter] = useState({}); // Tracks department filter
-  const [employees, setEmployees] = useState([]); // Employee data
+  const [editEmployee, setEditEmployee] = useState(null);
+  const [menu, setMenu] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filter, setFilter] = useState({});
+  const [employees, setEmployees] = useState([]);
   const [employeeForm, setEmployeeForm] = useState({
     e_name: "",
     e_email: "",
@@ -21,10 +21,9 @@ const Employees = () => {
     e_position: "",
     e_dept: "",
     e_joiningdate: "",
-    pic: null, // File object for profile picture
+    pic: null,
   });
 
-  // Fetch employees on component mount
   useEffect(() => {
     const fetchEmployees = async () => {
       try {
@@ -32,8 +31,8 @@ const Employees = () => {
         const data = await employeeService.listEmployees({
           filter,
           search: searchTerm,
-        }); // Fetch employees
-        setEmployees(data); // Update employees state with fetched data
+        });
+        setEmployees(data);
       } catch (error) {
         console.error("Failed to fetch employees:", error);
       }
@@ -42,24 +41,21 @@ const Employees = () => {
     fetchEmployees();
   }, [filter, searchTerm]);
 
-  // Handle employee delete
   const handleDelete = async (id) => {
     setMenu(null);
     try {
-      await employeeService.deleteEmployee(id); // Call delete API
-      setEmployees(employees.filter((employee) => employee._id !== id)); // Update state
-      setMenu(null); // Close menu after delete
+      await employeeService.deleteEmployee(id);
+      setEmployees(employees.filter((employee) => employee._id !== id));
+      setMenu(null);
     } catch (error) {
       console.error("Failed to delete employee:", error);
     }
   };
 
-  // Handle employee update (Edit)
   const handleUpdate = async () => {
     try {
       const formData = new FormData();
 
-      // Append form fields
       formData.append("e_name", employeeForm.e_name);
       formData.append("e_email", employeeForm.e_email);
       formData.append("e_phone", employeeForm.e_phone);
@@ -67,14 +63,13 @@ const Employees = () => {
       formData.append("e_dept", employeeForm.e_dept);
       formData.append("e_joiningdate", employeeForm.e_joiningdate);
 
-      // Append the pic file if present
       if (employeeForm.pic) {
         formData.append("pic", employeeForm.pic);
       }
 
       const updatedEmployee = await employeeService.updateEmployee(
         editEmployee,
-        formData // Send the FormData object
+        formData
       );
 
       setEmployees(
@@ -82,7 +77,7 @@ const Employees = () => {
           employee._id === editEmployee ? updatedEmployee : employee
         )
       );
-      setEditEmployee(null); // Close the edit modal
+      setEditEmployee(null);
       setEmployeeForm({
         e_name: "",
         e_email: "",
@@ -90,14 +85,13 @@ const Employees = () => {
         e_position: "",
         e_dept: "",
         e_joiningdate: "",
-        pic: null, // Reset pic file object
-      }); // Reset the form fields
+        pic: null,
+      });
     } catch (error) {
       console.error("Failed to update employee:", error);
     }
   };
 
-  // Handle form change for employee edit
   const handleFormChange = (e) => {
     const { name, value } = e.target;
     setEmployeeForm((prevForm) => ({
@@ -106,18 +100,16 @@ const Employees = () => {
     }));
   };
 
-  // Handle file input change for pic
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setEmployeeForm((prevForm) => ({
         ...prevForm,
-        pic: file, // Set the pic field as the file
+        pic: file,
       }));
     }
   };
 
-  // Pre-fill form when editing employee
   const handleEdit = (employee) => {
     setMenu(null);
     setEditEmployee(employee._id);
@@ -128,7 +120,7 @@ const Employees = () => {
       e_position: employee.e_position,
       e_dept: employee.e_dept,
       e_joiningdate: employee.e_joiningdate,
-      pic: employee.pic, // Pre-fill pic if exists
+      pic: employee.pic,
     });
   };
 
